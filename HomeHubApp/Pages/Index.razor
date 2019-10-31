@@ -1,0 +1,53 @@
+﻿@page "/"
+@inject IHttpClientFactory _clientFactory
+@inject HubClientService _hubClientService
+
+<button @onclick="@(  async () =>  await OnLightsOn() )">Lights ON</button>
+<button @onclick="@( async () => await OnLightsOff() )">Lights OFF</button>
+
+@code{
+
+    public async Task OnLightsOn()
+    {
+        var group = "2";
+        var command = "18";
+        var data = "0";
+        var rc = _hubClientService.SendGroupRequestAsync(group, command, data);
+    }
+
+    public async Task OnLightsOff()
+    {
+        var group = "2";
+        var command = "20";
+        var data = "0";
+        var rc = _hubClientService.SendGroupRequestAsync(group, command, data);
+    }
+
+
+    private async Task<bool> SendMessageAsync(string command)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:5001/api/group/2/{command}/0");
+
+        var client = _clientFactory.CreateClient();
+
+        var response = await client.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var r = await response.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            var r = await response.Content.ReadAsStringAsync();
+        }
+
+        return true;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+}
+
+
