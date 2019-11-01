@@ -1,11 +1,22 @@
 ﻿@page "/"
+
 @inject IHttpClientFactory _clientFactory
 @inject HubClientService _hubClientService
+@inject Repository _repository
+@inject DeviceManager _deviceManager
+
+
+
+<DeviceList Devices="@Devices"></DeviceList>
 
 <button @onclick="@(  async () =>  await OnLightsOn() )">Lights ON</button>
 <button @onclick="@( async () => await OnLightsOff() )">Lights OFF</button>
-
+<button @onclick="@( async () => await OnTest() )">Initialize</button>
+<div>@ErrorMessage</div>
 @code{
+
+    public DeviceControlDto[] Devices { get; set; }
+    public string ErrorMessage { get; set; }
 
     public async Task OnLightsOn()
     {
@@ -21,6 +32,18 @@
         var command = "20";
         var data = "0";
         var rc = _hubClientService.SendGroupRequestAsync(group, command, data);
+    }
+
+    public async Task OnTest()
+    {
+        try
+        {
+            await _deviceManager.InitializeAsync();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed - {ex.Message}";
+        }
     }
 
 
@@ -46,6 +69,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        Devices = _repository.GetDeviceControls();
+
+        this.Subscribe<DeviceManagerInitDonePub>( async m => {
+            await this.InvokeAsync(StateHasChanged);
+        });
     }
 
 }

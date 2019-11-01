@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HomeHubApp.Common;
+using HomeHubApp.Data;
 
 namespace HomeHubApp
 {
@@ -30,6 +31,8 @@ namespace HomeHubApp
             services.AddServerSideBlazor();
 
             services.AddSingleton<HubClientService>();
+            services.AddSingleton<Repository>();
+            services.AddSingleton<DeviceManager>();
 
             services.AddHttpClient();
         }

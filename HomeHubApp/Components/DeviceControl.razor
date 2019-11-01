@@ -1,0 +1,15 @@
+﻿@inject DeviceManager _deviceManager
+
+<div @onclick="@( async () => await SelectHandler() )">
+    @Device.Name @Device.Level 
+</div>
+
+@code {
+
+    [Parameter] public DeviceControlDto Device { get; set; }
+
+    public async Task SelectHandler()
+    {
+        await _deviceManager.ToggleAsync(Device);
+    }
+}

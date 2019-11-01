@@ -1,0 +1,14 @@
+﻿
+<ul class="w3-ul w3-card-4" style="width:100%">
+    @foreach (var d in Devices)
+    {
+        <li>
+            <DeviceControl Device="@d"   ></DeviceControl>
+        </li>
+    }
+
+</ul>
+
+@code {
+    [Parameter] public  DeviceControlDto[] Devices { get; set; }
+}

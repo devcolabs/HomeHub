@@ -26,7 +26,8 @@ namespace HomeHubApiServer.Controllers
             try
             {
                 var ok = _hubService.ProcessCommand(address, command, data);
-                return new JsonResult( new { ok, address, command, data });
+                var j = Ok( new { ok, address, command, data });
+                return Ok(new { ok, address, command, data });
             }
             catch(Exception ex)
             {
@@ -42,7 +43,7 @@ namespace HomeHubApiServer.Controllers
             try
             {
                 var ok = _hubService.ProcessGroup(group, command, data);
-                return new JsonResult(new { ok, group, command, data }); 
+                return Ok(new { ok, group, command, data }); 
             }
             catch(Exception ex)
             {
@@ -58,7 +59,8 @@ namespace HomeHubApiServer.Controllers
             {
                 var level = _hubService.ProcessStatus(address);
                 var ok = level >= 0;
-                return new JsonResult( new { ok , level }); 
+                var j  = Ok(new { ok, level });
+                return Ok( new { ok , level }); 
             }
             catch (Exception ex)
             {
