@@ -1,7 +1,9 @@
 ﻿@inject DeviceManager _deviceManager
 
-<div @onclick="@( async () => await SelectHandler() )">
-    @Device.Name @Device.Level 
+<div>
+    <div style="display:inline-block;width:60%" @onclick="@( async () => await SelectHandler() )">@Device.Name @Device.Level</div>
+    <div style="display:inline-block;width:15%" @onclick="@( async () => await ExtraHandler1() )">On</div>
+    <div style="display:inline-block;width:15%" @onclick="@( async () => await ExtraHandler2() )">Off</div>
 </div>
 
 @code {
@@ -12,4 +14,16 @@
     {
         await _deviceManager.ToggleAsync(Device);
     }
+
+    public async Task ExtraHandler1()
+    {
+        await _deviceManager.OnAsync(Device);
+    }
+
+    public async Task ExtraHandler2()
+    {
+        await _deviceManager.OffAsync(Device);
+    }
+
 }
+

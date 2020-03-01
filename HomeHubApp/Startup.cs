@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using HomeHubApp.Common;
 using HomeHubApp.Data;
 
+
 namespace HomeHubApp
 {
     public class Startup
@@ -33,8 +34,9 @@ namespace HomeHubApp
             services.AddSingleton<HubClientService>();
             services.AddSingleton<Repository>();
             services.AddSingleton<DeviceManager>();
+            services.AddSingleton<CoreContext>();
 
-            services.AddHttpClient();
+            services.AddHttpClient();   // This injects IHttpClientFactory 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

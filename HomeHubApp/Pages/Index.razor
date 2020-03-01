@@ -1,79 +1,22 @@
 ﻿@page "/"
 
-@inject IHttpClientFactory _clientFactory
-@inject HubClientService _hubClientService
-@inject Repository _repository
-@inject DeviceManager _deviceManager
+@inject NavigationManager _navigationManager
 
 
+<h1>Home Hub 1.0</h1>
 
-<DeviceList Devices="@Devices"></DeviceList>
-
-<button @onclick="@(  async () =>  await OnLightsOn() )">Lights ON</button>
-<button @onclick="@( async () => await OnLightsOff() )">Lights OFF</button>
-<button @onclick="@( async () => await OnTest() )">Initialize</button>
-<div>@ErrorMessage</div>
 @code{
-
-    public DeviceControlDto[] Devices { get; set; }
-    public string ErrorMessage { get; set; }
-
-    public async Task OnLightsOn()
-    {
-        var group = "2";
-        var command = "18";
-        var data = "0";
-        var rc = _hubClientService.SendGroupRequestAsync(group, command, data);
-    }
-
-    public async Task OnLightsOff()
-    {
-        var group = "2";
-        var command = "20";
-        var data = "0";
-        var rc = _hubClientService.SendGroupRequestAsync(group, command, data);
-    }
-
-    public async Task OnTest()
-    {
-        try
-        {
-            await _deviceManager.InitializeAsync();
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = $"Failed - {ex.Message}";
-        }
-    }
-
-
-    private async Task<bool> SendMessageAsync(string command)
-    {
-        var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:5001/api/group/2/{command}/0");
-
-        var client = _clientFactory.CreateClient();
-
-        var response = await client.SendAsync(request);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var r = await response.Content.ReadAsStringAsync();
-        }
-        else
-        {
-            var r = await response.Content.ReadAsStringAsync();
-        }
-
-        return true;
-    }
 
     protected override async Task OnInitializedAsync()
     {
-        Devices = _repository.GetDeviceControls();
+    }
 
-        this.Subscribe<DeviceManagerInitDonePub>( async m => {
-            await this.InvokeAsync(StateHasChanged);
-        });
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.InvokeAsync(StateHasChanged);
+        await Task.Delay(5000);
+        await base.InvokeAsync(StateHasChanged);
+        _navigationManager.NavigateTo( $"/lights/{DeviceTag.MainTag}");
     }
 
 }

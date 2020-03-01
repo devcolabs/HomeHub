@@ -2,14 +2,18 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/HomeHubApp",
+      "sslPort": 0
+    },
     "iisExpress": {
-      "applicationUrl": "http://localhost:57457",
-      "sslPort": 44323
+      "applicationUrl": "http://localhost:55002",
+      "sslPort": 0
     }
   },
   "profiles": {
     "IIS Express": {
-      "commandName": "IISExpress",
+      "commandName": "IIS",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -18,6 +22,7 @@
     "HomeHubApp": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "https://192.168.1.107:7001/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

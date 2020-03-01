@@ -25,32 +25,41 @@ namespace HomeHubApp.Common
         {
             _clientFactory = clientFactory;
             _httpClient = clientFactory.CreateClient();
+            _httpClient.Timeout = TimeSpan.FromSeconds(10);
         }
 
         public async Task<HubApiStatus> SendStatusRequestAsync(string address)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{_baseUrl}/api/status/{address}");
-            var response = await _httpClient.SendAsync(request);
-
             HubApiStatus status = new HubApiStatus() { Ok = false, Level = 0 };
-
-            dynamic json;
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var t = await response.Content.ReadAsStringAsync();
-                json = JObject.Parse(t);
+                var request = new HttpRequestMessage(HttpMethod.Get, $"{_baseUrl}/api/status/{address}");
+                HttpResponseMessage response = null;
+                    response = await _httpClient.SendAsync(request);
 
-                var okText = json.Value<string>("ok");
-                var levelText = json.Value<string>("level");
+                dynamic json;
 
-                bool ok;
-                int level;
-                status.Ok = bool.TryParse(json.Value<string>("ok"), out ok) ? ok : false;
-                status.Level = int.TryParse(json.Value<string>("level"), out level) ? level : 0;
+                if (response.IsSuccessStatusCode)
+                {
+                    var t = await response.Content.ReadAsStringAsync();
+                    json = JObject.Parse(t);
+
+                    var okText = json.Value<string>("ok");
+                    var levelText = json.Value<string>("level");
+
+                    bool ok;
+                    int level;
+                    status.Ok = bool.TryParse(json.Value<string>("ok"), out ok) ? ok : false;
+                    status.Level = int.TryParse(json.Value<string>("level"), out level) ? level : 0;
+                }
+
+                return status;
             }
-
-            return status;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return status;
+            }
         }
 
         public async Task<dynamic> SendCommnadRequestAsync(string address, string command, string data="0")

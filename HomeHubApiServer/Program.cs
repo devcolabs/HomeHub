@@ -30,7 +30,7 @@ namespace HomeHubApiServer
                 return false;
             }
 
-            // ManageConsoleWindow.HideWindow();
+            ManageConsoleWindow.HideWindow();
 
             return true;
         }

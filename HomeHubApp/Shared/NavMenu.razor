@@ -1,15 +1,18 @@
-﻿<nav class="w3-sidebar w3-bar-block w3-card" id="mySidebar" style="display:@_display">
-    <div class="w3-container w3-theme-d2">
-        <span @onclick="CloseSidebar" class="w3-button w3-display-topright w3-large">X</span>
-        <br>
-        <div class="w3-padding w3-center">
-            <img class="w3-circle" src="img_avatar.jpg" alt="avatar" style="width:75%">
+﻿@inject Repository _repository
+
+    <nav class="w3-sidebar w3-bar-block w3-card" id="mySidebar" style="display:@_display">
+        <div class="w3-container w3-theme-d2">
+            <span @onclick="CloseSidebar" class="w3-button w3-display-topright w3-large">X</span>
+            <br>
+            <div class="w3-padding w3-center">
+                <i class="material-icons">cloud</i>
+            </div>
         </div>
-    </div>
-    <a class="w3-bar-item w3-button" href="#">Movies</a>
-    <a class="w3-bar-item w3-button" href="#">Friends</a>
-    <a class="w3-bar-item w3-button" href="#">Messages</a>
-</nav>
+        @foreach (var t in _repository.GetTags())
+        {
+            <a class="w3-bar-item w3-button" href="#">@t</a>
+        }
+    </nav>
 
 <header class="w3-top w3-bar w3-theme">
     <button class="w3-bar-item w3-button w3-xxxlarge w3-hover-theme" @onclick="OpenSidebar">&#9776;</button>
