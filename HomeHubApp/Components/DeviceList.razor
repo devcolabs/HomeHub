@@ -1,8 +1,8 @@
 ﻿
-<ul class="w3-ul w3-card-4" style="width:100%">
+<ul class="ux" style="width:100%">
     @foreach (var d in Devices)
     {
-    <li>
+    <li class="">
         <DeviceControl Device="@d"></DeviceControl>
     </li>
     }
@@ -13,3 +13,14 @@
 @code {
     [CascadingParameter] public  DeviceControlDto[] Devices { get; set; }
 }
+
+<style>
+    ul.ux {
+        list-style: none;
+    }
+
+    .ux li {
+        list-style: none;
+    }
+
+</style>

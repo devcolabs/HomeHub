@@ -16,7 +16,7 @@
         await base.InvokeAsync(StateHasChanged);
         await Task.Delay(5000);
         await base.InvokeAsync(StateHasChanged);
-        _navigationManager.NavigateTo( $"/lights/{DeviceTag.MainTag}");
+        _navigationManager.NavigateTo( $"/HomeHubApp/lights/{DeviceTag.MainTag}");
     }
 
 }

@@ -1,4 +1,6 @@
 ﻿@page "/lights/{Tag}"
+@page "/HomeHubApp/lights/{Tag}"
+
 
 @inject IHttpClientFactory _clientFactory
 @inject HubClientService _hubClientService
@@ -6,8 +8,6 @@
 @inject DeviceManager _deviceManager
 
 
-<button @onclick="@(  async () =>  await OnLightsOn() )">Lights ON</button>
-<button @onclick="@( async () => await OnLightsOff() )">Lights OFF</button>
 <button @onclick="@( async () => await OnTest() )">Initialize</button>
 
 <CascadingValue Value="@Devices">
@@ -26,28 +26,8 @@
     {
         get
         {
-            return  _repository.GetDeviceControls().Where(d => d.Tags.Contains(Tag)).ToArray();
+            return _repository.GetDeviceControls().Where(d => d.Tags.Contains(Tag)).ToArray();
         }
-    }
-
-    public async Task OnLightsOn()
-    {
-        // Devices = _repository.GetDeviceControls().Where(d => d.Tags.Contains(DeviceTag.GardenTag)).ToArray();
-
-        //var group = "2";
-        //var command = "18";
-        //var data = "0";
-        //var rc = _hubClientService.SendGroupRequestAsync(group, command, data);
-    }
-
-    public async Task OnLightsOff()
-    {
-        // Devices = _repository.GetDeviceControls().Where(d => d.Tags.Contains(DeviceTag.MainTag)).ToArray();
-
-        //var group = "2";
-        //var command = "20";
-        //var data = "0";
-        //var rc = _hubClientService.SendGroupRequestAsync(group, command, data);
     }
 
     public async Task OnTest()
@@ -86,7 +66,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        
+
 
         this.Subscribe<DeviceManagerInitDonePub>
             (async m =>
@@ -95,6 +75,6 @@
             });
     }
 
-        }
+}
 
 

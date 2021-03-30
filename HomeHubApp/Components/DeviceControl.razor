@@ -1,18 +1,69 @@
 ﻿@inject DeviceManager _deviceManager
 
-<div>
-    <div style="display:inline-block;width:60%" @onclick="@( async () => await SelectHandler() )">@Device.Name @Device.Level</div>
-    <div style="display:inline-block;width:15%" @onclick="@( async () => await ExtraHandler1() )">On</div>
-    <div style="display:inline-block;width:15%" @onclick="@( async () => await ExtraHandler2() )">Off</div>
+<style>
+
+    .flex-container {
+        display:flex;
+    }
+
+        .flex-container div {
+            padding: 2px;
+            background-color: w3-theme-l4;
+        }
+
+    .on-style {
+        background-color: white;
+        color: black;
+        border: 2px solid black;
+        cursor: pointer;
+    }
+
+    .off-style {
+        background-color: black;
+        color: white;
+        border: 2px solid white;
+        cursor: pointer;
+    }
+
+    .loading-style {
+        background-color: red;
+        color: white;
+        border: 2px solid white;
+        cursor: progress;
+    }
+
+</style>
+
+<div class="w3-theme-l4 w3-panel">
+    @if(_loading)
+    {
+        <div class="loading-style">Loading...</div>
+    }
+    else
+    {
+        <div class="@CssClass" style="height:100%"  @onclick="@( async () => await SelectHandler() )">@Device.Name @Device.Level</div>
+
+        @*<button style="display:inline-block" class="w3-button w3-circle w3-black"><i class="fa fa-home"></i></button>*@
+    }
 </div>
 
 @code {
 
     [Parameter] public DeviceControlDto Device { get; set; }
 
+    private bool _loading = false;
+
+    public string CssClass
+    {
+        get { return Device.DeviceStatus == DeviceStatus.On ? "on-style" : "off-style";  }
+    }
+
     public async Task SelectHandler()
     {
+        _loading = true;
         await _deviceManager.ToggleAsync(Device);
+        await InvokeAsync(StateHasChanged);
+        _loading = false;
     }
 
     public async Task ExtraHandler1()

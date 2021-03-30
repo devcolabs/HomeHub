@@ -22,11 +22,11 @@
     "HomeHubApp": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://192.168.1.107:7001/",
+      "launchUrl": "http://192.168.4.33:5002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://192.168.1.107:7001;http://192.168.1.107:7000"
+      "applicationUrl": "https://192.168.4.33:5003;http://192.168.4.33:5002"
     }
   }
 }

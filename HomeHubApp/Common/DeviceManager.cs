@@ -29,9 +29,14 @@ namespace HomeHubApp.Common
         {
             try
             {
-                await _hubClientService.SendCommnadRequestAsync(device.Identifier, "18");
+                var response  = await _hubClientService.SendCommnadRequestAsync(device.Identifier, "18");
                 device.DeviceStatus = DeviceStatus.On;
-                return true;
+                if (response.ok)
+                {
+                    return true;
+                }
+
+                return false;
             }
             catch (Exception ex)
             {
@@ -43,9 +48,14 @@ namespace HomeHubApp.Common
         {
             try
             {
-                await _hubClientService.SendCommnadRequestAsync(device.Identifier, "20");
+                var response = await _hubClientService.SendCommnadRequestAsync(device.Identifier, "20");
                 device.DeviceStatus = DeviceStatus.Off;
-                return true;
+                if (response.ok)
+                {
+                    return true;
+                }
+
+                return false;
             }
             catch(Exception ex)
             {
